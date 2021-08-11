@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "networktutrorial 2"
+name = "socket-game"
 version = "0.1.0"
 description = ""
 authors = ["Davee Sok <daveesok@gmail.com>"]

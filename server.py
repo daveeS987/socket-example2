@@ -13,11 +13,11 @@ try:
 except socket.error as e:
     str(e)
 
-# the 2 is optional parameter to allow user ammount, empty means no limit
 server.listen(2)
-print("Waiting for a connection, Server Started")
+print("SERVER UP: Waiting for Connections..")
 
 connected = set()
+# games[gameId] will contain instance of Game
 games = {}
 idCount = 0
 
@@ -58,20 +58,18 @@ def threaded_client(conn, p, gameId):
     conn.close()
 
 
-
 while True:
     conn, addr = server.accept()
     print("Connected to:", addr)
 
     idCount += 1
     p = 0
-    gameId = (idCount - 1)//2
+    gameId = (idCount - 1) // 2
     if idCount % 2 == 1:
         games[gameId] = Game(gameId)
         print("Creating a new game...")
     else:
         games[gameId].ready = True
         p = 1
-
 
     start_new_thread(threaded_client, (conn, p, gameId))

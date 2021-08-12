@@ -15,28 +15,35 @@ except socket.error as e:
 s.listen(2)
 print("server UP: Waiting for Connections..")
 
-
+# takes string -> turn into tuple
 def read_pos(str):
     str = str.split(",")
     return int(str[0]), int(str[1])
 
 
+# takes tuple -> turn into string
 def make_pos(tup):
     return str(tup[0]) + "," + str(tup[1])
 
 
+# initialize players x,y position
+# index 0 is first player, index 1 is second player
 pos = [(0, 0), (100, 100)]
 
 
 def threaded_client(conn, player):
 
-    # player is the index, this is sending position of player
+    # player is the index: 0 or 1
+    # Once connect is called from network.py,
+    # It will send back the position of player to connect method in network.py
     conn.send(str.encode(make_pos(pos[player])))
 
     reply = ""
     while True:
         try:
-            # this is position received from client
+            # only send methods will trigger this code block
+
+            # this is position sent from client - the current player
             data = read_pos(conn.recv(2048).decode())
             # update current players position
             pos[player] = data
@@ -45,7 +52,7 @@ def threaded_client(conn, player):
                 print("Disconnected")
                 break
             else:
-                # if its a certain player, send the other players position
+                # Now send the other players position back to client
                 if player == 1:
                     reply = pos[0]
                 else:
@@ -53,6 +60,7 @@ def threaded_client(conn, player):
                 print("Recieved data: ", data)
                 print("Sending reply: ", reply)
 
+            # reply is currently a tuple
             # turn reply into string before sending back
             conn.sendall(str.encode(make_pos(reply)))
 

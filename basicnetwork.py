@@ -7,15 +7,18 @@ class Network:
         self.SERVER = socket.gethostbyname(socket.gethostname())
         self.PORT = 5555
         self.ADDR = (self.SERVER, self.PORT)
-        # this will be from currentPlayer in server
+        # this will be the current players position
         self.pos = self.connect()
 
     def getPos(self):
+        # this will send the position
         return self.pos
 
     def connect(self):
         try:
+            # this will make the initial connection
             self.client.connect(self.ADDR)
+            # will return the position, which will then be self.pos
             return self.client.recv(2048).decode()
         except:
             pass

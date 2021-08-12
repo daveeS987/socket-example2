@@ -61,7 +61,7 @@ def redrawWindow(win, player, player2):
 def main():
     run = True
     n = Network()
-    # turns into tuple
+    # n.getPos will connect to server and return with start position
     startPos = read_pos(n.getPos())
     # enter the position into Player object
     # We initialize player position
@@ -72,6 +72,9 @@ def main():
     while run:
         clock.tick(60)
 
+        # This sends position1 and returns position2
+        # which is the same as send our position and return opponent position
+        # the return will be a tuple - p2Pos
         p2Pos = read_pos(n.send(make_pos((p.x, p.y))))
         p2.x = p2Pos[0]
         p2.y = p2Pos[1]

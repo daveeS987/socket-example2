@@ -10,21 +10,29 @@ class Network:
         self.SERVER = socket.gethostbyname(socket.gethostname())
         self.PORT = 5555
         self.ADDR = (self.SERVER, self.PORT)
-        self.p = self.connect()
+        # this will make the connection when Network gets Instantiated
+        # player will then return and become Player Instance
+        self.player = self.connect()
 
-    def getPos(self):
-        return self.p
+    def getPlayer(self):
+        return self.player
 
     def connect(self):
         try:
             self.client.connect(self.ADDR)
+            # the byta data received from server needs to get converted back to object
+            # pickle load will change byte data into object
+            # this is returning the Player Instance
             return pickle.loads(self.client.recv(2048))
         except:
             pass
 
     def send(self, data):
         try:
+            # when you send to server, need to encode & serialize
+            # turns data obj into a pickle serialized object
             self.client.send(pickle.dumps(data))
+            # loads byte data back into object
             return pickle.loads(self.client.recv(2048))
         except socket.error as e:
             print(e)

@@ -4,32 +4,34 @@ from basicplayer import Player
 
 width = 500
 height = 500
-win = pygame.display.set_mode((width, height))
+window = pygame.display.set_mode((width, height))
 
 
-def redrawWindow(win, player, player2):
-    win.fill((255, 255, 255))
-    player.draw(win)
-    player2.draw(win)
+def redrawWindow(window, player, player2):
+    window.fill((255, 255, 255))
+    player.draw(window)
+    player2.draw(window)
     pygame.display.update()
 
 
 def main():
     run = True
     n = Network()
-
+    player1 = n.getPlayer()
     clock = pygame.time.Clock()
 
     while run:
         clock.tick(60)
+        # Send player1 to server to get back player2 object
+        player2 = n.send(player1)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
                 pygame.quit()
 
-        p.move()
-        redrawWindow(win, p, p2)
+        player1.move()
+        redrawWindow(window, player1, player2)
 
 
 main()

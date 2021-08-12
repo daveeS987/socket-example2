@@ -1,7 +1,9 @@
 import socket
 from _thread import *
-import sys
 
+# import sys  # check if this needs to be deleted or kept
+from basicplayer import Player
+import pickle
 
 port = 5555
 server = socket.gethostbyname(socket.gethostname())
@@ -17,41 +19,36 @@ s.listen(2)
 print("server UP: Waiting for Connections..")
 
 
-players = []
+players = [Player(0, 0, 50, 50, (255, 0, 0)), Player(100, 100, 50, 50, (0, 0, 255))]
 
 
 def threaded_client(conn, player):
 
-    # player is the index: 0 or 1
-    # Once connect is called from network.py,
-    # It will send back the position of player to connect method in network.py
-    conn.send(str.encode(make_pos(pos[player])))
+    # When a connection is made initially, send back player object
+    # Before sending -> encode and serialize data
+    conn.send(pickle.dumps(players[player]))
 
     reply = ""
     while True:
         try:
-            # only send methods will trigger this code block
 
-            # this is position sent from client - the current player
-            data = read_pos(conn.recv(2048).decode())
-            # update current players position
-            pos[player] = data
+            data = pickle.loads(conn.recv(2048))
+            players[player] = data
 
             if not data:
                 print("Disconnected")
                 break
             else:
-                # Now send the other players position back to client
-                if player == 1:
-                    reply = pos[0]
-                else:
-                    reply = pos[1]
-                print("Recieved data: ", data)
-                print("Sending reply: ", reply)
 
-            # reply is currently a tuple
-            # turn reply into string before sending back
-            conn.sendall(str.encode(make_pos(reply)))
+                # Whatever the current player is,
+                # Send the other players object
+                if player == 1:
+                    reply = players[0]
+                else:
+                    reply = players[1]
+
+            # Turn into serialized pickle object for sending back
+            conn.sendall(pickle.dumps(reply))
 
         except:
             break

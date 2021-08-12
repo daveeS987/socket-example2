@@ -1,31 +1,38 @@
 import socket
+import pickle
+
+# section 5 starts at 1:03
 
 
 class Network:
     def __init__(self):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.SERVER = "192.168.1.198"
+        self.SERVER = socket.gethostbyname(socket.gethostname())
         self.PORT = 5555
         self.ADDR = (self.SERVER, self.PORT)
-        # this will be from currentPlayer in server
-        self.pos = self.connect()
+        # this will make the connection when Network gets Instantiated
+        # player will then return and become Player Instance
+        self.player = self.connect()
 
-    def getPos(self):
-        return self.pos
+    def getPlayer(self):
+        return self.player
 
     def connect(self):
         try:
             self.client.connect(self.ADDR)
-            return self.client.recv(2048).decode()
+            # the byta data received from server needs to get converted back to object
+            # pickle load will change byte data into object
+            # this is returning the Player Instance
+            return pickle.loads(self.client.recv(2048))
         except:
             pass
 
     def send(self, data):
         try:
-            self.client.send(str.encode(data))
-            return self.client.recv(2048).decode()
+            # when you send to server, need to encode & serialize
+            # turns data obj into a pickle serialized object
+            self.client.send(pickle.dumps(data))
+            # loads byte data back into object
+            return pickle.loads(self.client.recv(2048))
         except socket.error as e:
             print(e)
-
-
-n = Network()

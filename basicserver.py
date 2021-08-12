@@ -32,7 +32,7 @@ def threaded_client(conn):
                 print("Disconnected")
                 break
             else:
-                print("Recieved :", reply)
+                print("Recieved: ", reply)
                 print("Sending: ", reply)
 
             conn.sendall(str.encode(reply))

@@ -15,20 +15,8 @@ except socket.error as e:
 s.listen(2)
 print("server UP: Waiting for Connections..")
 
-# takes string -> turn into tuple
-def read_pos(str):
-    str = str.split(",")
-    return int(str[0]), int(str[1])
 
-
-# takes tuple -> turn into string
-def make_pos(tup):
-    return str(tup[0]) + "," + str(tup[1])
-
-
-# initialize players x,y position
-# index 0 is first player, index 1 is second player
-pos = [(0, 0), (100, 100)]
+players = []
 
 
 def threaded_client(conn, player):

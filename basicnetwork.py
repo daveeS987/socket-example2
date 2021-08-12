@@ -1,4 +1,5 @@
 import socket
+import pickle
 
 
 class Network:
@@ -7,26 +8,22 @@ class Network:
         self.SERVER = socket.gethostbyname(socket.gethostname())
         self.PORT = 5555
         self.ADDR = (self.SERVER, self.PORT)
-        # this will be the current players position
-        self.pos = self.connect()
+        self.p = self.connect()
 
     def getPos(self):
-        # this will send the position
-        return self.pos
+        return self.p
 
     def connect(self):
         try:
-            # this will make the initial connection
             self.client.connect(self.ADDR)
-            # will return the position, which will then be self.pos
-            return self.client.recv(2048).decode()
+            return pickle.loads(self.client.recv(2048))
         except:
             pass
 
     def send(self, data):
         try:
-            self.client.send(str.encode(data))
-            return self.client.recv(2048).decode()
+            self.client.send(pickle.dumps(data))
+            return pickle.loads(self.client.recv(2048))
         except socket.error as e:
             print(e)
 

@@ -7,8 +7,11 @@ class Network:
         self.SERVER = "192.168.1.198"
         self.PORT = 5555
         self.ADDR = (self.SERVER, self.PORT)
-        self.id = self.connect()
-        print(self.id)
+        # this will be from currentPlayer in server
+        self.pos = self.connect()
+
+    def getPos(self):
+        return self.pos
 
     def connect(self):
         try:
@@ -26,5 +29,3 @@ class Network:
 
 
 n = Network()
-print(n.send("hello"))
-print(n.send("working"))

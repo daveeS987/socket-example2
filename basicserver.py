@@ -1,11 +1,9 @@
 import socket
 from _thread import *
-import pickle
 
 
 port = 5555
 server = socket.gethostbyname(socket.gethostname())
-# server = "71.132.164.72"
 ADDR = (server, port)
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 

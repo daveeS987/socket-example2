@@ -28,7 +28,6 @@ class Player:
 
         if keys[pygame.K_DOWN]:
             self.y += self.vel
-
         self.update()
 
     def update(self):

@@ -1,6 +1,6 @@
 import pygame
 from basicnetwork import Network
-from basicplayer import Player
+
 
 width = 500
 height = 500

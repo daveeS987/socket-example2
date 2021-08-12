@@ -33,6 +33,6 @@ class Network:
             # turns data obj into a pickle serialized object
             self.client.send(pickle.dumps(data))
             # loads byte data back into object
-            return pickle.loads(self.client.recv(2048))
+            return pickle.loads(self.client.recv(2048 * 2))
         except socket.error as e:
             print(e)

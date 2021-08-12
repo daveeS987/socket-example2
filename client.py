@@ -98,13 +98,16 @@ btns = [
 def main():
     run = True
     clock = pygame.time.Clock()
+    # Initialize the player
     n = Network()
+    # gets player index, either 0 or 1
     player = int(n.getP())
     print("You are player", player)
 
     while run:
         clock.tick(60)
         try:
+            # this is the game instance, will get the whole thing
             game = n.send("get")
         except:
             run = False

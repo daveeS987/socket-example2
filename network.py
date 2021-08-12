@@ -8,6 +8,7 @@ class Network:
         self.SERVER = socket.gethostbyname(socket.gethostname())
         self.PORT = 5555
         self.ADDR = (self.SERVER, self.PORT)
+        # this will be player 0 or 1
         self.p = self.connect()
 
     def getP(self):
@@ -15,6 +16,7 @@ class Network:
 
     def connect(self):
         try:
+            # when network gets initialized
             self.client.connect(self.ADDR)
             return self.client.recv(2048).decode()
         except:
@@ -23,7 +25,6 @@ class Network:
     def send(self, data):
         try:
             self.client.send(str.encode(data))
-            return pickle.loads(self.client.recv(2048*2))
+            return pickle.loads(self.client.recv(2048 * 2))
         except socket.error as e:
             print(e)
-

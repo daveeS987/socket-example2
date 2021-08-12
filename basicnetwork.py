@@ -1,6 +1,8 @@
 import socket
 import pickle
 
+# section 5 starts at 1:03
+
 
 class Network:
     def __init__(self):
@@ -26,6 +28,3 @@ class Network:
             return pickle.loads(self.client.recv(2048))
         except socket.error as e:
             print(e)
-
-
-n = Network()
